@@ -1,10 +1,7 @@
-const transactions=require('express').Router()
+const trans=require('express').Router()
 
-transactions.get('/', (req, res)=>{
-    return res.json({
-        success:true,
-        message:'List all transactions!'
-    })
-})
+const transController = require('../controllers/transactions')
 
-module.exports= transactions
+trans.get('/', transController.getAllTransactions)
+
+module.exports= trans

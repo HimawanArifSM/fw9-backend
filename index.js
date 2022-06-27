@@ -12,7 +12,7 @@ app.get('/', (req, res)=>{
     })
 })
 
-app.use('/', require('./src/routes/index'))
+app.use('/', require('./src/routes'))
 
 // app.post('/login', (req, res)=>{
 //     //console.log(req.body)
