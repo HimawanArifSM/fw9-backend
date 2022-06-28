@@ -1,7 +1,7 @@
-const trans=require('express').Router()
+const trans=require('express').Router();
 
-const transController = require('../controllers/transactions')
+const transController = require('../controllers/transactions');
 
-trans.get('/', transController.getAllTransactions)
+trans.get('/', transController.getAllTransactions);
 
-module.exports= trans
+module.exports= trans;

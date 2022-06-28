@@ -1,18 +1,20 @@
-const { response } = require('express')
-const express = require('express')
+//const { response } = require('express');
+require('dotenv').config();
 
-const app = express()
+const express = require('express');
 
-app.use(express.urlencoded({extended: false}))
+const app = express();
+
+app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res)=>{
-    return res.json({
-        success: true,
-        message:'backend is running well',
-    })
-})
+  return res.json({
+    success: true,
+    message:'backend is running well',
+  });
+});
 
-app.use('/', require('./src/routes'))
+app.use('/', require('./src/routes'));
 
 // app.post('/login', (req, res)=>{
 //     //console.log(req.body)
@@ -30,12 +32,12 @@ app.use('/', require('./src/routes'))
 // })
 
 app.use('*',(req, res)=>{
-    return res.status(404).json({
-        success: false,
-        messasge: 'Resource not found'
-    })
-})
+  return res.status(404).json({
+    success: false,
+    messasge: 'Resource not found'
+  });
+});
 
-app.listen(3333, ()=>{
-    console.log(`App is running on port 3333`)
-})
+app.listen(process.env.PORT, ()=>{
+  console.log('App is running on port 3333');
+});
