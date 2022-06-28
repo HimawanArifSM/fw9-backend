@@ -39,5 +39,5 @@ app.use('*',(req, res)=>{
 });
 
 app.listen(process.env.PORT, ()=>{
-  console.log('App is running on port 3333');
+  console.log(`app is runing on port ${process.env.PORT}`);
 });

@@ -9,7 +9,7 @@ const response = (res, msg, results, status=200)=>{
     message: msg
   };
 
-  if(res){
+  if(results){
     data.results=results;
   }
   return res.status(status).json(data);
