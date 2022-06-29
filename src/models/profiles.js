@@ -31,3 +31,12 @@ exports.deleteProfiles=(id, data, cb)=>{
     cb(res.rows);
   });
 };
+
+exports.getDetailProfiles = (id, cb)=>{
+  const q = 'SELECT * FROM profiles WHERE id=$1';
+  const val = [id];
+  db.query(q, val, (err, res)=>{
+    console.log(res);
+    cb(res.rows);
+  });
+};

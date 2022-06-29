@@ -14,3 +14,29 @@ exports.createTransactions=(data, cb)=>{
     cb(res.rows);
   });
 };
+
+exports.updateTransactions=(id, data, cb)=>{
+  const q = 'UPDATE transactions SET notes=$1, recipient_id=$2, sender_id=$3, amount=$4, time=$5, type_id=$6 WHERE id=$7 RETURNING *';
+  const val = [data.notes, data.recipient_id, data.sender_id, data.amount, data.time, data.type_id, id];
+  db.query(q, val, (err, res)=>{
+    //console.log(res);
+    cb(res.rows);
+  });
+};
+
+exports.deleteTransactions=(id, data, cb)=>{
+  const q = 'DELETE FROM transactions WHERE ID=$1 RETURNING *';
+  const val = [id];
+  db.query(q, val, (err, res)=>{
+    cb(res.rows);
+  });
+};
+
+exports.getDetailTransactions = (id, cb)=>{
+  const q = 'SELECT * FROM transactions WHERE id=$1';
+  const val = [id];
+  db.query(q, val, (err, res)=>{
+    console.log(res);
+    cb(res.rows);
+  });
+};

@@ -27,3 +27,10 @@ exports.deleteUsers = (req, res)=>{
     return response(res, 'Delete user successfully', results[0]);
   });
 };
+
+exports.getDetailUsers = (req, res)=>{
+  const {id}=req.params;
+  userModel.getDetailUsers(id, (results)=>{
+    return response(res, 'detail user', results[0]);
+  });
+};

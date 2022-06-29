@@ -27,3 +27,10 @@ exports.deleteProfiles = (req, res)=>{
     return response(res, 'Delete profile successfully', results[0]);
   });
 };
+
+exports.getDetailProfiles = (req, res)=>{
+  const {id}=req.params;
+  profilesModel.getDetailProfiles(id, (results)=>{
+    return response(res, 'detail profile', results[0]);
+  });
+};
