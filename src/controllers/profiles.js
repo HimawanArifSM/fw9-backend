@@ -8,12 +8,22 @@ exports.getAllProfiles = (req, res)=>{
   });
 };
 
-// const response = require('../helpers/standardRespons');
+exports.createProfiles = (req, res)=>{
+  profilesModel.createProfiles(req.body, (results)=>{
+    return response(res, 'Create profile succesfully', results[0]);
+  });
+};
 
-// const userModel = require('../models/users');
+exports.updateProfiles = (req, res)=>{
+  const {id}=req.params;
+  profilesModel.updateProfiles(id, req.body, (results)=>{
+    return response(res, 'Update profile succesfully', results[0]);
+  });
+};
 
-// exports.getAllUsers = (req, res)=>{
-//   userModel.getAllUsers((results)=>{
-//     return response(res, 'message from standard response', results);
-//   });
-// };
+exports.deleteProfiles = (req, res)=>{
+  const {id}=req.params;
+  profilesModel.deleteProfiles(id, req.body, (results)=>{
+    return response(res, 'Delete profile successfully', results[0]);
+  });
+};

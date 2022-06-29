@@ -8,12 +8,8 @@ exports.getAllTransactions = (req, res)=>{
   });
 };
 
-// const response = require('../helpers/standardRespons');
-
-// const userModel = require('../models/users');
-
-// exports.getAllUsers = (req, res)=>{
-//   userModel.getAllUsers((results)=>{
-//     return response(res, 'message from standard response', results);
-//   });
-// };
+exports.createTransactions = (req, res)=>{
+  transactionsModel.createTransactions(req.body, (results)=>{
+    return response(res, 'Create Transactions succesfully', results[0]);
+  });
+};
