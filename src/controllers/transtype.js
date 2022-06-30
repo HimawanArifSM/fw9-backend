@@ -1,26 +1,56 @@
 const response = require('../helpers/standardRespons');
-
 const transtypeModel= require('../models/transtype');
+const { validationResult}=require('express-validator');
+const errorResponse = require('../helpers/errorResponse');
 
+//GET
 exports.getAllTranstype = (req, res)=>{
   transtypeModel.getAllTranstype((results)=>{
     return response(res, 'message from standardresponse', results);
   });
 };
 
+//CREATE
 exports.createTranstype = (req, res)=>{
-  transtypeModel.createTranstype(req.body, (results)=>{
-    return response(res, 'Create transaction type succesfully', results[0]);
+  const validation = validationResult(req);
+  if(!validation.isEmpty()){
+    return response(res, 'Error Ocured', validation.array(), 400);
+  }
+  transtypeModel.createTranstype(req.body, (err, results)=>{
+    //console.log(err);
+    if(err){
+      if(err.detail.includes('name')){
+        const erres = errorResponse('name already used', 'name');
+        return response(res, 'Error', erres, 400);
+      }
+      else{
+        return response(res, 'Create profile succesfully', results[0]);
+      }
+    }
   });
 };
 
+//UPDATE
 exports.updateTranstype = (req, res)=>{
+  const validation = validationResult(req);
+  if(!validation.isEmpty()){
+    return response(res, 'Error Ocured', validation.array(), 400);
+  }
   const {id}=req.params;
-  transtypeModel.updateTranstype(id, req.body, (results)=>{
-    return response(res, 'Update transaction type succesfully', results[0]);
+  transtypeModel.updateTranstype(id, req.body, (err, results)=>{
+    if(err){
+      if(err.detail.includes('name')){
+        const erres = errorResponse('name already used', 'name');
+        return response(res, 'Error', erres, 400);
+      }
+      else{
+        return response(res, 'Create profile succesfully', results[0]);
+      }
+    }
   });
 };
 
+//DELETE
 exports.deleteTranstype = (req, res)=>{
   const {id}=req.params;
   transtypeModel.deleteTranstype(id, req.body, (results)=>{
@@ -28,6 +58,7 @@ exports.deleteTranstype = (req, res)=>{
   });
 };
 
+//GET DETAIL
 exports.getDetailTranstype = (req, res)=>{
   const {id}=req.params;
   transtypeModel.getDetailTranstype(id, (results)=>{

@@ -10,8 +10,8 @@ const createUsersValidator = [
 ];
 
 users.get('/', userController.getAllUsers);
-users.post('/', ...createUsersValidator.createUsers);
-users.patch('/:id', userController.updateUsers);
+users.post('/', ...createUsersValidator, userController.createUsers);
+users.patch('/:id', ...createUsersValidator,userController.updateUsers);
 users.delete('/:id', userController.deleteUsers);
 users.get('/:id', userController.getDetailUsers);
 

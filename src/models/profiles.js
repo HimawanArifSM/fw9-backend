@@ -11,7 +11,12 @@ exports.createProfiles=(data, cb)=>{
   const val = [data.iduser, data.fullname, data.balance, data.picture, data.phonenumber];
   db.query(q, val, (err, res)=>{
     //console.log(err);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 
@@ -20,7 +25,12 @@ exports.updateProfiles=(id, data, cb)=>{
   const val = [data.fullname, data.balance, data.picture, data.phonenumber, id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 

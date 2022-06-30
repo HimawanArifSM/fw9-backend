@@ -4,5 +4,5 @@ const errorResponse = (msg, param, location='body')=>[
     param,
     location
   }
-]
+];
 module.exports = errorResponse;

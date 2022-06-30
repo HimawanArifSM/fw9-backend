@@ -11,7 +11,12 @@ exports.createTransactions=(data, cb)=>{
   const val = [data.notes, data.recipient_id, data.sender_id, data.amount, data.time, data.type_id];
   db.query(q, val, (err, res)=>{
     //console.log(err);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 
@@ -20,7 +25,12 @@ exports.updateTransactions=(id, data, cb)=>{
   const val = [data.notes, data.recipient_id, data.sender_id, data.amount, data.time, data.type_id, id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 

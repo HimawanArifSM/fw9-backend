@@ -11,7 +11,12 @@ exports.createTranstype=(data, cb)=>{
   const val = [data.name, data.description];
   db.query(q, val, (err, res)=>{
     //console.log(err);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 
@@ -20,7 +25,12 @@ exports.updateTranstype=(id, data, cb)=>{
   const val = [data.name, data.description, id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 
