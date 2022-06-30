@@ -11,7 +11,12 @@ exports.createUsers=(data, cb)=>{
   const val = [data.username, data.email, data.password, data.pin];
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    if(res){
+      cb(err, res.rows);
+    }else{
+      cb(err);
+    }
+    // cb(res.rows);
   });
 };
 
