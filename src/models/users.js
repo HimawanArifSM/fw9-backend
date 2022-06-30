@@ -36,7 +36,7 @@ exports.getDetailUsers = (id, cb)=>{
   const q = 'SELECT * FROM users WHERE id=$1';
   const val = [id];
   db.query(q, val, (err, res)=>{
-    console.log(res);
+    //console.log(res);
     cb(res.rows);
   });
 };

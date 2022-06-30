@@ -10,7 +10,7 @@ exports.createTransactions=(data, cb)=>{
   const q = 'INSERT INTO transactions(notes, recipient_id, sender_id, amount, time, type_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
   const val = [data.notes, data.recipient_id, data.sender_id, data.amount, data.time, data.type_id];
   db.query(q, val, (err, res)=>{
-    console.log(err);
+    //console.log(err);
     cb(res.rows);
   });
 };
@@ -36,7 +36,7 @@ exports.getDetailTransactions = (id, cb)=>{
   const q = 'SELECT * FROM transactions WHERE id=$1';
   const val = [id];
   db.query(q, val, (err, res)=>{
-    console.log(res);
+    //console.log(res);
     cb(res.rows);
   });
 };

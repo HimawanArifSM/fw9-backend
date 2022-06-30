@@ -36,7 +36,7 @@ exports.getDetailTranstype = (id, cb)=>{
   const q = 'SELECT * FROM transactiontype WHERE id=$1';
   const val = [id];
   db.query(q, val, (err, res)=>{
-    console.log(res);
+    //console.log(res);
     cb(res.rows);
   });
 };
