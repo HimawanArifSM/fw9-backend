@@ -19,14 +19,7 @@ exports.createProfiles = (req, res)=>{
   profilesModel.createProfiles(req.body, (err, results)=>{
     //console.log(err);
     if(err){
-      if(err.code === '23505' && err.detail.includes('phonenumber')){
-        const erres = errorResponse('phonenumber already used', 'phonenumber');
-        return response(res, 'Error', erres, 400);
-      }else if(err.code === '23505' && err.detail.includes('iduser')){
-        const erres = errorResponse('iduser already used', 'iduser');
-        return response(res, 'Error', erres, 400);
-      }
-      return response(res, 'Create profile successfully', results[0]);
+      return errorResponse(err, res);
     }
     else{
       return response(res, 'Create profile succesfully', results[0]);
@@ -43,14 +36,7 @@ exports.updateProfiles = (req, res)=>{
   const {id}=req.params;
   profilesModel.updateProfiles(id, req.body, (err, results)=>{
     if(err){
-      if(err.code === '23505' && err.detail.includes('phonenumber')){
-        const erres = errorResponse('phonenumber already used', 'phonenumber');
-        return response(res, 'Error', erres, 400);
-      }else if(err.code === '23505' && err.detail.includes('iduser')){
-        const erres = errorResponse('iduser already used', 'iduser');
-        return response(res, 'Error', erres, 400);
-      }
-      return response(res, 'Update profile successfully', results[0]);
+      return errorResponse(err, res);
     }
     else{
       return response(res, 'Update profile succesfully', results[0]);

@@ -19,13 +19,10 @@ exports.createTranstype = (req, res)=>{
   transtypeModel.createTranstype(req.body, (err, results)=>{
     //console.log(err);
     if(err){
-      if(err.detail.includes('name')){
-        const erres = errorResponse('name already used', 'name');
-        return response(res, 'Error', erres, 400);
-      }
-      else{
-        return response(res, 'Create profile succesfully', results[0]);
-      }
+      return errorResponse(err, res);
+    }
+    else{
+      return response(res, 'Create profile succesfully', results[0]);
     }
   });
 };
@@ -39,13 +36,10 @@ exports.updateTranstype = (req, res)=>{
   const {id}=req.params;
   transtypeModel.updateTranstype(id, req.body, (err, results)=>{
     if(err){
-      if(err.detail.includes('name')){
-        const erres = errorResponse('name already used', 'name');
-        return response(res, 'Error', erres, 400);
-      }
-      else{
-        return response(res, 'Create profile succesfully', results[0]);
-      }
+      return errorResponse(err, res);
+    }
+    else{
+      return response(res, 'Create profile succesfully', results[0]);
     }
   });
 };

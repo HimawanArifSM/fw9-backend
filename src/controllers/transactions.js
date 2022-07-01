@@ -16,7 +16,7 @@ exports.createTransactions = (req, res)=>{
   if(!validation.isEmpty()){
     return response(res, 'Error Ocured', validation.array(), 400);
   }
-  transactionsModel.createTransactions(req.body, (results)=>{
+  transactionsModel.createTransactions(req.body, (err, results)=>{
     return response(res, 'Create Transactions succesfully', results[0]);
   });
 };
@@ -28,7 +28,7 @@ exports.updateTransactions = (req, res)=>{
     return response(res, 'Error Ocured', validation.array(), 400);
   }
   const {id}=req.params;
-  transactionsModel.updateTransactions(id, req.body, (results)=>{
+  transactionsModel.updateTransactions(id, req.body, (err, results)=>{
     return response(res, 'Update Transactions succesfully', results[0]);
   });
 };

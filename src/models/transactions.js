@@ -7,11 +7,14 @@ exports.getAllTransactions = (cb)=>{
 };
 
 exports.createTransactions=(data, cb)=>{
+  const time1 = new Date();
+  console.log(time1);
   const q = 'INSERT INTO transactions(notes, recipient_id, sender_id, amount, time, type_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-  const val = [data.notes, data.recipient_id, data.sender_id, data.amount, data.time, data.type_id];
+  const val = [data.notes, data.recipient_id, data.sender_id, data.amount, time1, data.type_id];
   db.query(q, val, (err, res)=>{
-    //console.log(err);
+    //console.log(res);
     if(res){
+      console.log(res);
       cb(err, res.rows);
     }else{
       cb(err);

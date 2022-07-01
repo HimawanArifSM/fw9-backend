@@ -18,14 +18,7 @@ exports.createUsers = (req, res)=>{
   }
   userModel.createUsers(req.body, (err, results)=>{
     if(err){
-      if(err.code === '23505' && err.detail.includes('email')){
-        const erres = errorResponse('Email already exist', 'email');
-        return response(res, 'Error', erres, 400);
-      }else if(err.code === '23505' && err.detail.includes('username')){
-        const erres = errorResponse('Username already used', 'username');
-        return response(res, 'Error', erres, 400);
-      }
-      return response(res, 'Create user successfully', results[0]);
+      return errorResponse(err, res);
     }else{
       return response(res, 'Create user succesfully', results[0]);
     }   
@@ -41,14 +34,7 @@ exports.updateUsers = (req, res)=>{
   const {id}=req.params;
   userModel.updateUsers(id, req.body, (err, results)=>{
     if(err){
-      if(err.code === '23505' && err.detail.includes('email')){
-        const erres = errorResponse('Email already exist', 'email');
-        return response(res, 'Error', erres, 400);
-      }else if(err.code === '23505' && err.detail.includes('username')){
-        const erres = errorResponse('Username already used', 'username');
-        return response(res, 'Error', erres, 400);
-      }
-      return response(res, 'Create user successfully', results[0]);
+      return errorResponse(err, res);
     }
     else{
       return response(res, 'Update user succesfully', results[0]);
