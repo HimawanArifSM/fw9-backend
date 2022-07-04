@@ -14,7 +14,7 @@ exports.getAllTransactions = (req, res)=>{
 exports.createTransactions = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   transactionsModel.createTransactions(req.body, (err, results)=>{
     return response(res, 'Create Transactions succesfully', results[0]);
@@ -25,7 +25,7 @@ exports.createTransactions = (req, res)=>{
 exports.updateTransactions = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   const {id}=req.params;
   transactionsModel.updateTransactions(id, req.body, (err, results)=>{

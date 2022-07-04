@@ -14,7 +14,7 @@ exports.getAllTranstype = (req, res)=>{
 exports.createTranstype = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   transtypeModel.createTranstype(req.body, (err, results)=>{
     //console.log(err);
@@ -31,7 +31,7 @@ exports.createTranstype = (req, res)=>{
 exports.updateTranstype = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   const {id}=req.params;
   transtypeModel.updateTranstype(id, req.body, (err, results)=>{

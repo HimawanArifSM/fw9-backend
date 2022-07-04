@@ -9,6 +9,8 @@ const bcrypt = require('bcrypt');
 const createUsersValidator = [
   body('email').isEmail().withMessage('Email format invalid'),
   body('username').isLength({min: 4}).withMessage('Username length minimal 4 character'),
+  body('limit').toInt(),
+  body('page').toInt(),
   body('password').isLength({min: 8}).withMessage('Password length minimal 4 character')
     .customSanitizer(async (val)=>{
       const hash = await bcrypt.hash(val, 10);

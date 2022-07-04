@@ -14,7 +14,7 @@ exports.getAllProfiles = (req, res)=>{
 exports.createProfiles = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   profilesModel.createProfiles(req.body, (err, results)=>{
     //console.log(err);
@@ -31,7 +31,7 @@ exports.createProfiles = (req, res)=>{
 exports.updateProfiles = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   const {id}=req.params;
   profilesModel.updateProfiles(id, req.body, (err, results)=>{

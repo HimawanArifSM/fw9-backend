@@ -3,10 +3,27 @@ const userModel = require('../models/users');
 const { validationResult}=require('express-validator');
 const errorResponse = require('../helpers/errorResponse');
 
+const{LIMIT_DATA}= process.env;
+
 //GET ALL
 exports.getAllUsers = (req, res)=>{
-  userModel.getAllUsers((results)=>{
-    return response(res, 'message from standard response', results);
+  const {search='', limit=parseInt(LIMIT_DATA), page=1}= req.query;
+
+  const offset = (page - 1) * limit;
+
+  userModel.getAllUsers(search, limit, offset, (err, results)=>{
+    if(results.length<1){
+      return res.redirect('/404');
+    }
+    const pageInfo = {};
+    userModel.countAllsers(search, (err, totalData)=>{
+      pageInfo.totalData= totalData;
+      pageInfo.totalpage= Math.ceil(totalData/limit);
+      pageInfo.currentpage= parseInt(page);
+      pageInfo.nextPage= pageInfo.currentpage < pageInfo.totalpage ? pageInfo.currentpage + 1 : null;
+      pageInfo.prevpage= pageInfo.currentpage > 1 ? pageInfo.currentpage - 1 : null;
+      return response(res, 'list all users', results, pageInfo);
+    });
   });
 };
 
@@ -14,7 +31,7 @@ exports.getAllUsers = (req, res)=>{
 exports.createUsers = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   userModel.createUsers(req.body, (err, results)=>{
     if(err){
@@ -29,7 +46,7 @@ exports.createUsers = (req, res)=>{
 exports.updateUsers = (req, res)=>{
   const validation = validationResult(req);
   if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), 400);
+    return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   const {id}=req.params;
   userModel.updateUsers(id, req.body, (err, results)=>{
@@ -54,6 +71,10 @@ exports.deleteUsers = (req, res)=>{
 exports.getDetailUsers = (req, res)=>{
   const {id}=req.params;
   userModel.getDetailUsers(id, (results)=>{
-    return response(res, 'detail user', results[0]);
+    if(results.rows.length > 0){
+      return response(res, 'Detail user', results.rows[0]);
+    }
+    else{return res.redirect('/404');
+    }
   });
 };
