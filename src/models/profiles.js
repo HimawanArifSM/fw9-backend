@@ -1,8 +1,18 @@
 const db = require('../helpers/db');
+const {LIMIT_DATA}=process.env;
 
-exports.getAllProfiles = (cb)=>{
-  db.query('SELECT * FROM profiles', (err, res)=>{
-    cb(res.rows);
+
+exports.getAllProfiles = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT_DATA), offset=0,cb)=>{
+  db.query(`SELECT * FROM profiles WHERE ${search_by} LIKE '%${keyword}%' ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
+    console.log(res);
+    cb(err, res.rows);
+  });
+};
+
+//count users
+exports.countAllProfiles = (keyword, cb)=>{
+  db.query(`SELECT * FROM profiles WHERE fullname LIKE '%${keyword}%'`, (err, res)=>{
+    cb(err, res.rowCount);
   });
 };
 
@@ -10,7 +20,7 @@ exports.createProfiles=(data, cb)=>{
   const q = 'INSERT INTO profiles(iduser, fullname, balance, picture, phonenumber) VALUES ($1, $2, $3, $4, $5) RETURNING *';
   const val = [data.iduser, data.fullname, data.balance, data.picture, data.phonenumber];
   db.query(q, val, (err, res)=>{
-    //console.log(err);
+    console.log(err);
     if(res){
       cb(err, res.rows);
     }else{

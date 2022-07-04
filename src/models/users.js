@@ -3,14 +3,15 @@ const db = require('../helpers/db');
 const {LIMIT_DATA}=process.env;
 
 //GET USER
-exports.getAllUsers = (keyword, limit=parseInt(LIMIT_DATA), offset=0, cb)=>{
-  db.query(`SELECT * FROM users WHERE username LIKE '%${keyword}%' ORDER BY id ASC LIMIT $1 OFFSET $2`, [limit, offset], (err, res)=>{
+exports.getAllUsers = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT_DATA), offset=0, cb)=>{
+  db.query(`SELECT * FROM users WHERE ${search_by} LIKE '%${keyword}%' ORDER BY ${sortBy} ${sorting} LIMIT $1 OFFSET $2`, [limit, offset], (err, res)=>{
+    console.log(err);
     cb(err, res.rows);
   });
 };
 
 //count users
-exports.countAllsers = (keyword, cb)=>{
+exports.countAllUsers = (keyword, cb)=>{
   db.query(`SELECT * FROM users WHERE username LIKE '%${keyword}%'`, (err, res)=>{
     cb(err, res.rowCount);
   });

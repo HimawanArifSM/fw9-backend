@@ -7,16 +7,17 @@ const{LIMIT_DATA}= process.env;
 
 //GET ALL
 exports.getAllUsers = (req, res)=>{
-  const {search='', limit=parseInt(LIMIT_DATA), page=1}= req.query;
+  const {seacrh_by='username', search='', sortBy='id', sorting='ASC', limit=parseInt(LIMIT_DATA), page=1}= req.query;
 
   const offset = (page - 1) * limit;
 
-  userModel.getAllUsers(search, limit, offset, (err, results)=>{
+  userModel.getAllUsers(seacrh_by ,search, sortBy, sorting, limit, offset, (err, results)=>{
+    console.log(err);
     if(results.length<1){
       return res.redirect('/404');
     }
     const pageInfo = {};
-    userModel.countAllsers(search, (err, totalData)=>{
+    userModel.countAllUsers(search, (err, totalData)=>{
       pageInfo.totalData= totalData;
       pageInfo.totalpage= Math.ceil(totalData/limit);
       pageInfo.currentpage= parseInt(page);
