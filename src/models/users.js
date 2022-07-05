@@ -11,8 +11,8 @@ exports.getAllUsers = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT
 };
 
 //count users
-exports.countAllUsers = (keyword, cb)=>{
-  db.query(`SELECT * FROM users WHERE username LIKE '%${keyword}%'`, (err, res)=>{
+exports.countAllUsers = (search_by, keyword, cb)=>{
+  db.query(`SELECT * FROM users WHERE ${search_by} LIKE '%${keyword}%'`, (err, res)=>{
     cb(err, res.rowCount);
   });
 };

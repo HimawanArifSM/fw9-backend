@@ -1,10 +1,24 @@
 const db = require('../helpers/db');
+const {LIMIT_DATA}=process.env;
 
-exports.getAllTranstype = (cb)=>{
-  db.query('SELECT * FROM transactiontype', (err, res)=>{
-    cb(res.rows);
+// exports.getAllTranstype = (cb)=>{
+//   db.query('SELECT * FROM transactiontype', (err, res)=>{
+//     cb(res.rows);
+//   });
+// };
+exports.getAllTranstype = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT_DATA), offset=0, cb)=>{
+  db.query(`SELECT * FROM transactiontype WHERE ${search_by} LIKE '%${keyword}%' ORDER BY ${sortBy} ${sorting} LIMIT $1 OFFSET $2`, [limit, offset], (err, res)=>{
+    console.log(err);
+    cb(err, res.rows);
   });
 };
+//count Transtype
+exports.countAllTranstype = (search_by, keyword, cb)=>{
+  db.query(`SELECT * FROM transactiontype WHERE ${search_by} LIKE '%${keyword}%'`, (err, res)=>{
+    cb(err, res.rowCount);
+  });
+};
+
 
 exports.createTranstype=(data, cb)=>{
   const q = 'INSERT INTO transactiontype(name, description) VALUES ($1, $2) RETURNING *';

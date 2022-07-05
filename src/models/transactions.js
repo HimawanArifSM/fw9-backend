@@ -1,10 +1,26 @@
 const db = require('../helpers/db');
+const {LIMIT_DATA}=process.env;
 
-exports.getAllTransactions = (cb)=>{
-  db.query('SELECT * FROM transactions', (err, res)=>{
-    cb(res.rows);
+// exports.getAllTransactions = (cb)=>{
+//   db.query('SELECT * FROM transactions', (err, res)=>{
+//     cb(res.rows);
+//   });
+// };
+exports.getAllTransactions = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT_DATA), offset=0,cb)=>{
+  db.query(`SELECT * FROM transactions WHERE ${search_by} = ${keyword} ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
+    console.log(res);
+    cb(err, res.rows);
   });
 };
+
+//count users
+exports.countAllTransactions = (search_by, keyword, cb)=>{
+  db.query(`SELECT * FROM transactions WHERE ${search_by} = ${keyword}`, (err, res)=>{
+    cb(err, res.rowCount);
+  });
+};
+
+
 
 exports.createTransactions=(data, cb)=>{
   const time1 = new Date();

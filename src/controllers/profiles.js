@@ -22,7 +22,7 @@ exports.getAllProfiles = (req, res)=>{
       return res.redirect('/404');
     }
     const pageInfo = {};
-    profilesModel.countAllProfiles(search, (err, totalData)=>{
+    profilesModel.countAllProfiles(seacrh_by, search, (err, totalData)=>{
       pageInfo.totalData= totalData;
       pageInfo.totalpage= Math.ceil(totalData/limit);
       pageInfo.currentpage= parseInt(page);

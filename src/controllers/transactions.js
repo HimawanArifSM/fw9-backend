@@ -2,13 +2,37 @@ const response = require('../helpers/standardRespons');
 const transactionsModel= require('../models/transactions');
 const { validationResult}=require('express-validator');
 //const errorResponse = require('../helpers/errorResponse');
+const{LIMIT_DATA}= process.env;
 
 //GET
+// exports.getAllTransactions = (req, res)=>{
+//   transactionsModel.getAllTransactions((results)=>{
+//     return response(res, 'message from standard response', results);
+//   });
+// };
 exports.getAllTransactions = (req, res)=>{
-  transactionsModel.getAllTransactions((results)=>{
-    return response(res, 'message from standard response', results);
+  const {search_by='sender_id', search='', sortBy='id', sorting='ASC', limit=parseInt(LIMIT_DATA), page=1}= req.query;
+
+  const offset = (page - 1) * limit;
+
+  transactionsModel.getAllTransactions(search_by ,search, sortBy, sorting, limit, offset, (err, results)=>{
+    console.log(err);
+    if(results.length<1){
+      return res.redirect('/404');
+    }
+    const pageInfo = {};
+    transactionsModel.countAllTransactions(search_by, search, (err, totalData)=>{
+      pageInfo.totalData= totalData;
+      pageInfo.totalpage= Math.ceil(totalData/limit);
+      pageInfo.currentpage= parseInt(page);
+      pageInfo.nextPage= pageInfo.currentpage < pageInfo.totalpage ? pageInfo.currentpage + 1 : null;
+      pageInfo.prevpage= pageInfo.currentpage > 1 ? pageInfo.currentpage - 1 : null;
+      return response(res, 'list all users', results, pageInfo);
+    });
   });
 };
+
+
 
 //CREATE
 exports.createTransactions = (req, res)=>{

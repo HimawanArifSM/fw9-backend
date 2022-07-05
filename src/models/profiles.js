@@ -10,8 +10,8 @@ exports.getAllProfiles = (search_by, keyword, sortBy, sorting, limit=parseInt(LI
 };
 
 //count users
-exports.countAllProfiles = (keyword, cb)=>{
-  db.query(`SELECT * FROM profiles WHERE fullname LIKE '%${keyword}%'`, (err, res)=>{
+exports.countAllProfiles = (search_by, keyword, cb)=>{
+  db.query(`SELECT * FROM profiles WHERE ${search_by} LIKE '%${keyword}%'`, (err, res)=>{
     cb(err, res.rowCount);
   });
 };
