@@ -46,7 +46,7 @@ exports.createTranstype = (req, res)=>{
       return errorResponse(err, res);
     }
     else{
-      return response(res, 'Create profile succesfully', results[0]);
+      return response(res, 'Create profile succesfully', results.rows);
     }
   });
 };

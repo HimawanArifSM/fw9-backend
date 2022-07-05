@@ -24,7 +24,7 @@ exports.createUsers=(data, cb)=>{
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
-      cb(err, res.rows);
+      cb(err, res);
     }else{
       cb(err);
     }

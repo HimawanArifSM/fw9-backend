@@ -39,7 +39,7 @@ exports.createProfiles = (req, res)=>{
     return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   profilesModel.createProfiles(req.body, (err, results)=>{
-    //console.log(err);
+    console.log(err);
     if(err){
       return errorResponse(err, res);
     }

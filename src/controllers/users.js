@@ -38,7 +38,7 @@ exports.createUsers = (req, res)=>{
     if(err){
       return errorResponse(err, res);
     }else{
-      return response(res, 'Create user succesfully', results[0]);
+      return response(res, 'Create user succesfully', results.rows);
     }   
   });
 };

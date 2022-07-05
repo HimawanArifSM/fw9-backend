@@ -26,7 +26,7 @@ exports.createTranstype=(data, cb)=>{
   db.query(q, val, (err, res)=>{
     //console.log(err);
     if(res){
-      cb(err, res.rows);
+      cb(err, res);
     }else{
       cb(err);
     }
