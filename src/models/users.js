@@ -52,6 +52,7 @@ exports.deleteUsers=(id, data, cb)=>{
   const q = 'DELETE FROM users WHERE ID=$1 RETURNING *';
   const val = [id];
   db.query(q, val, (err, res)=>{
+    //console.log(err)
     cb(res.rows);
   });
 };
