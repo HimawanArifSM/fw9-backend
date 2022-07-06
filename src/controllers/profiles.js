@@ -39,14 +39,19 @@ exports.createProfiles = (req, res)=>{
   if(!validation.isEmpty()){
     return response(res, 'Error Ocured', validation.array(), null, 400);
   }
-  profilesModel.createProfiles(req.body, (err, results)=>{
-    console.log(err);
+  upload(req, res, (err)=>{
     if(err){
-      return errorResponse(err, res);
+      return response(res, `Failed to upload ${err.message}`, null, null, 400);
     }
-    else{
-      return response(res, 'Create profile succesfully', results[0]);
-    }
+    profilesModel.createProfiles(req.file.filename, req.body, (err, results)=>{
+      console.log(err);
+      if(err){
+        return errorResponse(err, res);
+      }
+      else{
+        return response(res, 'Create profile succesfully', results[0]);
+      }
+    });
   });
 };
 

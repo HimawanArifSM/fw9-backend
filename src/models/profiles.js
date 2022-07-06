@@ -16,9 +16,9 @@ exports.countAllProfiles = (search_by, keyword, cb)=>{
   });
 };
 
-exports.createProfiles=(data, cb)=>{
+exports.createProfiles=(picture, data, cb)=>{
   const q = 'INSERT INTO profiles(iduser, fullname, balance, picture, phonenumber) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-  const val = [data.iduser, data.fullname, data.balance, data.picture, data.phonenumber];
+  const val = [data.iduser, data.fullname, data.balance, picture, data.phonenumber];
   db.query(q, val, (err, res)=>{
     console.log(err);
     if(res){
