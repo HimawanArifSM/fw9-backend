@@ -3,6 +3,7 @@ const profilesModel= require('../models/profiles');
 const { validationResult}=require('express-validator');
 const errorResponse = require('../helpers/errorResponse');
 const{LIMIT_DATA}= process.env;
+const upload = require('../helpers/upload').single('picture');
 
 //GET
 // exports.getAllProfiles = (req, res)=>{
@@ -56,13 +57,18 @@ exports.updateProfiles = (req, res)=>{
     return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   const {id}=req.params;
-  profilesModel.updateProfiles(id, req.body, (err, results)=>{
+  upload(req, res, (err)=>{
     if(err){
-      return errorResponse(err, res);
+      return response(res, `Failed to upload ${err.message}`, null, null, 400);
     }
-    else{
-      return response(res, 'Update profile succesfully', results[0]);
-    }
+    profilesModel.updateProfiles(id, req.file.filename, req.body, (err, results)=>{
+      if(err){
+        return errorResponse(err, res);
+      }
+      else{
+        return response(res, 'Update profile succesfully', results[0]);
+      }
+    });
   });
 };
 

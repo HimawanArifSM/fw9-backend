@@ -26,13 +26,13 @@ exports.createProfiles=(data, cb)=>{
     }else{
       cb(err);
     }
-    // cb(res.rows);
+    //cb(res.rows);
   });
 };
 
-exports.updateProfiles=(id, data, cb)=>{
+exports.updateProfiles=(id, picture, data, cb)=>{
   const q = 'UPDATE profiles SET fullname=$1, balance=$2, picture=$3, phonenumber=$4 WHERE id=$5 RETURNING *';
-  const val = [data.fullname, data.balance, data.picture, data.phonenumber, id];
+  const val = [data.fullname, data.balance, picture, data.phonenumber, id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
