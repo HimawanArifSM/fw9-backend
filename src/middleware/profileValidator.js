@@ -1,4 +1,4 @@
-const body = require('express-validator');
+const {body} = require('express-validator');
 
 const profileValidator = [
   body('fullname').isLength({min: 4}).withMessage('Fullname length minimal 4 character'),

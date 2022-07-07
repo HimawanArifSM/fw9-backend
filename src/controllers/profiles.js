@@ -2,7 +2,7 @@
 const response = require('../helpers/standardRespons');
 const profilesModel= require('../models/profiles');
 //const { validationResult}=require('express-validator');
-const errorResponse = require('../helpers/errorResponse');
+//const errorResponse = require('../helpers/errorResponse');
 const{LIMIT_DATA}= process.env;
 
 
@@ -44,7 +44,7 @@ exports.createProfiles = (req, res)=>{
   profilesModel.createProfiles(filename, req.body, (err, results)=>{
     console.log(err);
     if(err){
-      return errorResponse(err, res);
+      return response(res, `Failed to update ${err.message}`, null,null,400);
     }
     else{
       return response(res, 'Create profile succesfully', results[0]);
@@ -55,17 +55,20 @@ exports.createProfiles = (req, res)=>{
 //UPDATE
 exports.updateProfiles = (req, res)=>{
   const {id}=req.params;
-
+  console.log(req.body);
+  console.log(req.file);
   let filename = null;
   if (req.file){
     filename = req.file.filename;
   }
   profilesModel.updateProfiles(id, filename, req.body, (err, results)=>{
+    console.log(req.file);
+    //console.log(err);
     if(err){
-      return errorResponse(err, res);
+      return response(res, `Failed to update ${err.message}`, null,null,400);
     }
     else{
-      return response(res, 'Update profile succesfully', results[0]);
+      return response(res, 'Update profile succesfully', results.rows[0]);
     }
   });
 };

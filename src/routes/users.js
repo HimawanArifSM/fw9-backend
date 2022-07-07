@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const createUsersValidator = [
   body('email').isEmail().withMessage('Email format invalid'),
   body('username').isLength({min: 4}).withMessage('Username length minimal 4 character'),
+  body('username').isAlpha().withMessage('username cant use space'),
   body('limit').toInt(),
   body('page').toInt(),
   body('pin').isLength(6).withMessage('Pin must be 6 character'),

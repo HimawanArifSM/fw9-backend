@@ -18,8 +18,9 @@ exports.countAllProfiles = (search_by, keyword, cb)=>{
 
 exports.createProfiles=(picture, data, cb)=>{
   const val=[];
+  console.log(val);
   const filtered = {};
-  const obj ={picture, fullname:data.fullname, balance:data.balance, phonenumber:data.phonenumber};
+  const obj ={picture, iduser:data.iduser, fullname:data.fullname, balance:data.balance, phonenumber:data.phonenumber};
   for(let x in obj){
     if(obj[x]!==null){
       filtered[x]=obj[x];
@@ -27,8 +28,8 @@ exports.createProfiles=(picture, data, cb)=>{
     }
   }
   const key = Object.keys(filtered);
-  const finalResult = key.map((o, ind)=>`${o}=${ind+2}`);
-  const q = `UPDATE profiles SET ${finalResult} RETURNING *`;
+  const finalResult = key.map((o, ind)=>`$${ind+1}`);
+  const q = `INSERT INTO profiles(${key}) VALUES (${finalResult}) RETURNING *`;
   db.query(q, val, (err, res)=>{
     console.log(err);
     if(res){
@@ -43,7 +44,10 @@ exports.createProfiles=(picture, data, cb)=>{
 exports.updateProfiles=(id, picture, data, cb)=>{
   let val = [id];
   const filtered = {};
-  const obj ={picture, fullname:data.fullname, balance:data.balance, phonenumber:data.phonenumber};
+  const obj ={picture, 
+    fullname:data.fullname, 
+    balance:data.balance, 
+    phonenumber:data.phonenumber};
   for(let x in obj){
     if(obj[x]!==null){
       filtered[x]=obj[x];
@@ -51,12 +55,12 @@ exports.updateProfiles=(id, picture, data, cb)=>{
     }
   }
   const key = Object.keys(filtered);
-  const finalResult = key.map((o, ind)=>`${o}=${ind+2}`);
-  const q = `UPDATE profiles SET ${finalResult} WHERE id=$5 RETURNING *`;
+  const finalResult = key.map((o, ind)=>`${o}=$${ind+2}`);
+  const q = `UPDATE profiles SET ${finalResult} WHERE id=$1 RETURNING *`;
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
-      cb(err, res.rows);
+      cb(err, res);
     }else{
       cb(err);
     }
