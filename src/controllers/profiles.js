@@ -1,9 +1,10 @@
+//const upload = require('../helpers/upload').single('picture');
 const response = require('../helpers/standardRespons');
 const profilesModel= require('../models/profiles');
-const { validationResult}=require('express-validator');
+//const { validationResult}=require('express-validator');
 const errorResponse = require('../helpers/errorResponse');
 const{LIMIT_DATA}= process.env;
-const upload = require('../helpers/upload').single('picture');
+
 
 //GET
 // exports.getAllProfiles = (req, res)=>{
@@ -33,47 +34,39 @@ exports.getAllProfiles = (req, res)=>{
     });
   });
 };
+
 //CREATE
 exports.createProfiles = (req, res)=>{
-  const validation = validationResult(req);
-  if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), null, 400);
+  let filename = null;
+  if (req.file){
+    filename = req.file.filename;
   }
-  upload(req, res, (err)=>{
+  profilesModel.createProfiles(filename, req.body, (err, results)=>{
+    console.log(err);
     if(err){
-      return response(res, `Failed to upload ${err.message}`, null, null, 400);
+      return errorResponse(err, res);
     }
-    profilesModel.createProfiles(req.file.filename, req.body, (err, results)=>{
-      console.log(err);
-      if(err){
-        return errorResponse(err, res);
-      }
-      else{
-        return response(res, 'Create profile succesfully', results[0]);
-      }
-    });
+    else{
+      return response(res, 'Create profile succesfully', results[0]);
+    }
   });
 };
 
 //UPDATE
 exports.updateProfiles = (req, res)=>{
-  const validation = validationResult(req);
-  if(!validation.isEmpty()){
-    return response(res, 'Error Ocured', validation.array(), null, 400);
-  }
   const {id}=req.params;
-  upload(req, res, (err)=>{
+
+  let filename = null;
+  if (req.file){
+    filename = req.file.filename;
+  }
+  profilesModel.updateProfiles(id, filename, req.body, (err, results)=>{
     if(err){
-      return response(res, `Failed to upload ${err.message}`, null, null, 400);
+      return errorResponse(err, res);
     }
-    profilesModel.updateProfiles(id, req.file.filename, req.body, (err, results)=>{
-      if(err){
-        return errorResponse(err, res);
-      }
-      else{
-        return response(res, 'Update profile succesfully', results[0]);
-      }
-    });
+    else{
+      return response(res, 'Update profile succesfully', results[0]);
+    }
   });
 };
 

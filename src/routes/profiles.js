@@ -2,19 +2,15 @@ const profiles=require('express').Router();
 
 const profileController = require('../controllers/profiles');
 
-const { body } =require('express-validator');
+const rules = require('../middleware/profileValidator');
 
+const validation = require('../middleware/validation');
 
-
-const createProfileValidator = [
-  body('fullname').isLength({min:1}).withMessage('Fullname length minimal 4 character'),
-  body('limit').toInt(),
-  body('page').toInt()
-];
+const uploadFile = require('../middleware/uploadFile');
 
 profiles.get('/', profileController.getAllProfiles);
-profiles.post('/', ...createProfileValidator,profileController.createProfiles);
-profiles.patch('/:id',profileController.updateProfiles);
+profiles.post('/', uploadFile,...rules, validation, profileController.createProfiles);
+profiles.patch('/:id', uploadFile,...rules, validation, profileController.updateProfiles);
 profiles.delete('/:id', profileController.deleteProfiles);
 profiles.get('/:id', profileController.getDetailProfiles);
 
