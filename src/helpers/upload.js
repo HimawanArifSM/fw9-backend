@@ -9,6 +9,9 @@ const storage = multer.diskStorage({
   filename: (req, file, cb)=>{
     const timestamp = new Date().getTime();
     const ext = file.mimetype.split('/')[1];
+    if(!file){
+      cb(null, null);
+    }
     cb(null, `${timestamp}.${ext}`);
   }
 });

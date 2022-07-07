@@ -17,8 +17,18 @@ exports.countAllProfiles = (search_by, keyword, cb)=>{
 };
 
 exports.createProfiles=(picture, data, cb)=>{
-  const q = 'INSERT INTO profiles(iduser, fullname, balance, picture, phonenumber) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-  const val = [data.iduser, data.fullname, data.balance, picture, data.phonenumber];
+  const val=[];
+  const filtered = {};
+  const obj ={picture, fullname:data.fullname, balance:data.balance, phonenumber:data.phonenumber};
+  for(let x in obj){
+    if(obj[x]!==null){
+      filtered[x]=obj[x];
+      val.push(obj[x]);
+    }
+  }
+  const key = Object.keys(filtered);
+  const finalResult = key.map((o, ind)=>`${o}=${ind+2}`);
+  const q = `UPDATE profiles SET ${finalResult} RETURNING *`;
   db.query(q, val, (err, res)=>{
     console.log(err);
     if(res){
@@ -31,8 +41,18 @@ exports.createProfiles=(picture, data, cb)=>{
 };
 
 exports.updateProfiles=(id, picture, data, cb)=>{
-  const q = 'UPDATE profiles SET fullname=$1, balance=$2, picture=$3, phonenumber=$4 WHERE id=$5 RETURNING *';
-  const val = [data.fullname, data.balance, picture, data.phonenumber, id];
+  let val = [id];
+  const filtered = {};
+  const obj ={picture, fullname:data.fullname, balance:data.balance, phonenumber:data.phonenumber};
+  for(let x in obj){
+    if(obj[x]!==null){
+      filtered[x]=obj[x];
+      val.push(obj[x]);
+    }
+  }
+  const key = Object.keys(filtered);
+  const finalResult = key.map((o, ind)=>`${o}=${ind+2}`);
+  const q = `UPDATE profiles SET ${finalResult} WHERE id=$5 RETURNING *`;
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
