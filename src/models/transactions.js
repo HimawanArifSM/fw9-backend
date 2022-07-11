@@ -33,7 +33,7 @@ exports.createTransactions=(data, cb)=>{
       console.log(res);
       cb(err, res.rows);
     }else{
-      cb(err);
+      cb(err); 
     }
     // cb(res.rows);
   });

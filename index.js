@@ -1,6 +1,7 @@
 //const { response } = require('express');
 require('dotenv').config();
 
+//const authMiddleware=require('./src/middleware/auth');
 const express = require('express');
 
 global.__basepath = __dirname;
@@ -17,22 +18,9 @@ app.get('/', (req, res)=>{
   });
 });
 
+
 app.use('/', require('./src/routes'));
 
-// app.post('/login', (req, res)=>{
-//     //console.log(req.body)
-//     console.log(req.query)
-//     if(req.body.email === 'him@mail.com'&&req.body.password==="1234"){
-//         return res.json({
-//             success : true,
-//             message: 'Login success'
-//         })
-//     }else{   
-//         return res.json({
-//         success: false,
-//         message:'Login failed',
-//     })}s
-// })
 
 app.use('*',(req, res)=>{
   return res.status(404).json({

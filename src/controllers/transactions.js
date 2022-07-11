@@ -1,7 +1,7 @@
 const response = require('../helpers/standardRespons');
 const transactionsModel= require('../models/transactions');
 const { validationResult}=require('express-validator');
-//const errorResponse = require('../helpers/errorResponse');
+const errorResponse = require('../helpers/errorResponse');
 const{LIMIT_DATA}= process.env;
 
 //GET
@@ -41,7 +41,12 @@ exports.createTransactions = (req, res)=>{
     return response(res, 'Error Ocured', validation.array(), null, 400);
   }
   transactionsModel.createTransactions(req.body, (err, results)=>{
-    return response(res, 'Create Transactions succesfully', results[0]);
+    if(err){
+      return errorResponse(err, res);
+    }
+    else{
+      return response(res, 'Create profile succesfully', results.rows);
+    }
   });
 };
 

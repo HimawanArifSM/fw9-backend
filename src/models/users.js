@@ -34,12 +34,27 @@ exports.createUsers=(data, cb)=>{
 
 //UPDATE
 exports.updateUsers=(id, data, cb)=>{
-  const q = 'UPDATE users SET username=$1, email=$2, password=$3, pin=$4 WHERE id=$5 RETURNING *';
-  const val = [data.username, data.email, data.password, data.pin, id];
+  let val = [id];
+  const filtered = {};
+  const obj ={email:data.email, password:data.password,
+    username:data.username, pin : data.pin};
+  for(let x in obj){
+    if(obj[x]!==null){
+      if(obj[x]!==undefined){
+        console.log(obj[x]);
+        filtered[x]=obj[x];
+        val.push(obj[x]);
+      }
+    }
+  }
+  const key = Object.keys(filtered);
+  const finalResult = key.map((o, ind)=>`${o}=$${ind+2}`);
+  const q = `UPDATE users SET ${finalResult} WHERE id=$1 RETURNING *`;
+  //const val = [data.username, data.email, data.password, data.pin, id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
-      cb(err, res.rows);
+      cb(err, res);
     }else{
       cb(err);
     }
@@ -57,12 +72,22 @@ exports.deleteUsers=(id, data, cb)=>{
   });
 };
 
-//GET DETAIL
+//GET USER BY ID
 exports.getDetailUsers = (id, cb)=>{
   const q = 'SELECT * FROM users WHERE id=$1';
   const val = [id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
     cb(res.rows);
+  });
+};
+
+//GET USER BY EMAIL
+exports.getUserByEmail = (email, cb)=>{
+  const q = 'SELECT * FROM users WHERE email=$1';
+  const val = [email];
+  db.query(q, val, (err, res)=>{
+    //console.log(res);
+    cb(err, res);
   });
 };
