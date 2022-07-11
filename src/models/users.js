@@ -78,7 +78,7 @@ exports.getDetailUsers = (id, cb)=>{
   const val = [id];
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    cb(err, res);
   });
 };
 

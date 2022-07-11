@@ -1,4 +1,4 @@
-const db = require('../helpers/db');
+aconst db = require('../helpers/db');
 const {LIMIT_DATA}=process.env;
 
 
@@ -79,8 +79,19 @@ exports.deleteProfiles=(id, data, cb)=>{
 exports.getDetailProfiles = (id, cb)=>{
   const q = 'SELECT * FROM profiles WHERE id=$1';
   const val = [id];
+  console.log(id);
+  db.query(q, val, (err, res)=>{
+    console.log(res);
+    cb(err, res.rows);
+  });
+};
+
+exports.getLogedProfiles = (id, cb)=>{
+  const q = 'SELECT * FROM profiles WHERE iduser=$1';
+  const val = [id];
+  console.log(id);
   db.query(q, val, (err, res)=>{
     //console.log(res);
-    cb(res.rows);
+    cb(err, res);
   });
 };

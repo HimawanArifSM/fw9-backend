@@ -45,7 +45,7 @@ exports.createTransactions = (req, res)=>{
       return errorResponse(err, res);
     }
     else{
-      return response(res, 'Create profile succesfully', results.rows);
+      return response(res, 'Create profile succesfully', results.rows[0]);
     }
   });
 };

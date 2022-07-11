@@ -30,8 +30,8 @@ exports.createTransactions=(data, cb)=>{
   db.query(q, val, (err, res)=>{
     //console.log(res);
     if(res){
-      console.log(res);
-      cb(err, res.rows);
+      //console.log(res);
+      cb(err, res);
     }else{
       cb(err); 
     }
@@ -67,5 +67,13 @@ exports.getDetailTransactions = (id, cb)=>{
   db.query(q, val, (err, res)=>{
     //console.log(res);
     cb(res.rows);
+  });
+};
+exports.getHistoryTransactions = (id, cb)=>{
+  const q = 'SELECT * FROM transactions WHERE sender_id=$1 or recipient_id=$1';
+  const val = [id];
+  db.query(q, val, (err, res)=>{
+    console.log(res);
+    cb(err, res);
   });
 };
