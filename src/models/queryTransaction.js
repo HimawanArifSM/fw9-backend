@@ -16,12 +16,8 @@ exports.transfer=(sender_id, data, cb)=>{
         }
         else{
           const q2= 'UPDATE profiles SET balance=balance-$1 WHERE iduser=$2 returning *';
-          //const q2= 'SELECT * FROM profiles where iduser=$1';
           const val2= [parseInt(data.amount), res.rows[0].sender_id];
-          //const val2=[res.rows[0].sender_id];
-          //console.log(res.rows[0].sender_id);
           db.query(q2, val2, (err)=>{
-            //console.log(res.rows);
             if(err){
               console.log('error 3');
             }
@@ -41,6 +37,39 @@ exports.transfer=(sender_id, data, cb)=>{
                       console.error('Error transfer', err.stack);
                     }
                   });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+exports.register =(data, cb)=>{
+  db.query('BEGIN', err=>{
+    if(err){
+      console.log('error 1');
+    }else{
+      const q = 'INSERT INTO users(username, email, password) VALUES ($1, $2, $3) RETURNING *';
+      const val = [data.username, data.email, data.password];
+      db.query(q, val, (err, res)=>{
+        if(err){
+          console.log('error 2');
+        }else{
+          const q2= 'INSERT INTO profiles (iduser) VALUES ($1) RETURNING *';
+          const val2 = [res.rows[0].id];
+          console.log(res.rows[0].id);
+          db.query(q2, val2, (err, res)=>{
+            console.log(err);
+            if(err){
+              console.log('error 3');
+            }else{
+              cb(err, res);
+              db.query('COMMIT', err=>{
+                if(err){
+                  console.error('Error transfer', err.stack);
                 }
               });
             }

@@ -3,15 +3,29 @@ const response = require('../helpers/standardRespons');
 const errorResponse = require('../helpers/errorResponse');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const qtModels = require('../models/queryTransaction');
+
+
+// exports.register=(req, res)=>{
+//   req.body.pin = null;
+//   userModel.createUsers(req.body, (err)=>{
+//     if(err){
+//       return errorResponse(err, res);
+//     }else{
+//       return response(res, 'Create user succesfully');
+//     }  
+//   });
+// };
 
 exports.register=(req, res)=>{
-  req.body.pin = null;
-  userModel.createUsers(req.body, (err)=>{
+  //req.body.pin = null;
+  qtModels.register(req.body, (err)=>{
     if(err){
-      return errorResponse(err, res);
-    }else{
+      return errorResponse(err,res);
+    }
+    else{
       return response(res, 'Create user succesfully');
-    }  
+    }
   });
 };
 
