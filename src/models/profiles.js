@@ -1,4 +1,4 @@
-aconst db = require('../helpers/db');
+const db = require('../helpers/db');
 const {LIMIT_DATA}=process.env;
 
 
@@ -50,15 +50,18 @@ exports.updateProfiles=(id, picture, data, cb)=>{
     phonenumber:data.phonenumber};
   for(let x in obj){
     if(obj[x]!==null){
-      filtered[x]=obj[x];
-      val.push(obj[x]);
+      if(obj[x]!==undefined){
+        console.log(obj[x]);
+        filtered[x]=obj[x];
+        val.push(obj[x]);
+      }
     }
   }
   const key = Object.keys(filtered);
   const finalResult = key.map((o, ind)=>`${o}=$${ind+2}`);
-  const q = `UPDATE profiles SET ${finalResult} WHERE id=$1 RETURNING *`;
+  const q = `UPDATE profiles SET ${finalResult} WHERE iduser=$1 RETURNING *`;
   db.query(q, val, (err, res)=>{
-    //console.log(res);
+    console.log(res);
     if(res){
       cb(err, res);
     }else{
@@ -89,7 +92,7 @@ exports.getDetailProfiles = (id, cb)=>{
 exports.getLogedProfiles = (id, cb)=>{
   const q = 'SELECT * FROM profiles WHERE iduser=$1';
   const val = [id];
-  console.log(id);
+  //console.log(id);
   db.query(q, val, (err, res)=>{
     //console.log(res);
     cb(err, res);

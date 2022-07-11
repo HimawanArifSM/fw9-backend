@@ -20,7 +20,7 @@ exports.transfer=(sender_id, data, cb)=>{
           const val2= [parseInt(data.amount), res.rows[0].sender_id];
           //const val2=[res.rows[0].sender_id];
           //console.log(res.rows[0].sender_id);
-          db.query(q2, val2, (err, res)=>{
+          db.query(q2, val2, (err)=>{
             //console.log(res.rows);
             if(err){
               console.log('error 3');

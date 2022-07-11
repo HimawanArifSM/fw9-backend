@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-router.use('/users', require('./users'));
-router.use('/transactions', require('./transactions'));
+router.use('/admin/users', require('./users'));
+router.use('/admin/transactions', require('./transactions'));
 router.use('/profiles', require('./profiles'));
-router.use('/transtypes', require('./transtypes'));
+router.use('/admin/transtypes', require('./transtypes'));
 router.use('/auth', require('./auth'));
 router.use('/authenticated', require('./authenticated'));
 

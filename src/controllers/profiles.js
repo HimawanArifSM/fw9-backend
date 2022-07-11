@@ -54,7 +54,7 @@ exports.createProfiles = (req, res)=>{
 
 //UPDATE
 exports.updateProfiles = (req, res)=>{
-  const {id}=req.params;
+  const {id}=req.authUser;
   console.log(req.body);
   console.log(req.file);
   let filename = null;
