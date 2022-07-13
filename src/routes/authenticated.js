@@ -1,7 +1,7 @@
 const authenticated=require('express').Router();
 const authMiddleware=require('../middleware/auth');
 const authController=require('../controllers/authenticated');
-const profileController=require('../controllers/profiles');
+//const profileController=require('../controllers/profiles');
 const uploadFile = require('../middleware/uploadFile');
 
 //GET
@@ -10,12 +10,12 @@ authenticated.get('/hostoryTransactions', authMiddleware, authController.history
 
 //POST
 authenticated.post('/transfer', authMiddleware, authController.transfer);
-authenticated.post('/addPhonenumber', authMiddleware, authController.createPhone);
+authenticated.post('/phone', authMiddleware, authController.createPhone);
 
 //PATCH
-authenticated.patch('/updateprofile', authMiddleware, uploadFile, profileController.updateProfiles);
-authenticated.patch('/updatePassword', authMiddleware, authController.updatePassword);
-authenticated.patch('/updatePin', authMiddleware, authController.updatePin);
-authenticated.patch('/updatePhone', authMiddleware, uploadFile, profileController.updateProfiles);
+authenticated.patch('/profiles', authMiddleware, uploadFile, authController.updateProfiles);
+authenticated.patch('/changePassword', authMiddleware, authController.updatePassword);
+authenticated.patch('/changePin', authMiddleware, authController.updatePin);
+authenticated.patch('/phone', authMiddleware, uploadFile, authController.updateProfiles);
 
 module.exports=authenticated;

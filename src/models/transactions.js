@@ -69,11 +69,16 @@ exports.getDetailTransactions = (id, cb)=>{
     cb(res.rows);
   });
 };
-exports.getHistoryTransactions = (id, cb)=>{
-  const q = 'SELECT * FROM transactions WHERE sender_id=$1 or recipient_id=$1';
-  const val = [id];
-  db.query(q, val, (err, res)=>{
+exports.getHistoryTransactions = (id, search_by ,keyword, sortBy, sorting, limit, offset=0, cb)=>{
+  //const q = 'SELECT * FROM transactions WHERE sender_id=$1 or recipient_id=$1';
+  db.query(`SELECT * FROM transactions WHERE sender_id=${id} ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
+  //const val = [id];
     console.log(res);
-    cb(err, res);
+    cb(err, res.rows);
+  });
+};
+exports.countAllHistoryTransactions = (id, search_by, keyword, cb)=>{
+  db.query(`SELECT * FROM transactions WHERE sender_id = ${id}`, (err, res)=>{
+    cb(err, res.rowCount);
   });
 };

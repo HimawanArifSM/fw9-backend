@@ -5,7 +5,7 @@ const qtModels = require('../models/queryTransaction');
 const errorResponse = require('../helpers/errorResponse');
 const userModel=require('../models/users');
 const bcrypt = require('bcrypt');
-
+const{LIMIT_DATA}= process.env;
 
 exports.getProfile = (req, res)=>{
   const {id}=req.authUser;
@@ -20,16 +20,37 @@ exports.getProfile = (req, res)=>{
   });
 };
 
+// exports.historyTransactions = (req, res)=>{
+//   const {id}=req.authUser;
+//   //console.log('tes'+id)
+//   transactionsModel.getHistoryTransactions(id, (err, results)=>{
+//     //console.log(results);
+//     if(results.rows.length > 0){
+//       return response(res, 'Detail profiles', results.rows[0]);
+//     }
+//     else{return res.redirect('/404');
+//     }
+//   });
+// };
 exports.historyTransactions = (req, res)=>{
+  const {search_by='note', search='', sortBy='time', sorting='ASC', limit=parseInt(LIMIT_DATA), page=1}= req.query;
   const {id}=req.authUser;
-  //console.log('tes'+id)
-  transactionsModel.getHistoryTransactions(id, (err, results)=>{
-    //console.log(results);
-    if(results.rows.length > 0){
-      return response(res, 'Detail profiles', results.rows[0]);
+  const offset = (page - 1) * limit;
+
+  transactionsModel.getHistoryTransactions(id, search_by ,search, sortBy, sorting, limit, offset, (err, results)=>{
+    //console.log(err);
+    if(results.length<1){
+      return res.redirect('/404');
     }
-    else{return res.redirect('/404');
-    }
+    const pageInfo = {};
+    transactionsModel.countAllHistoryTransactions(id, search_by, search, (err, totalData)=>{
+      pageInfo.totalData= totalData;
+      pageInfo.totalpage= Math.ceil(totalData/limit);
+      pageInfo.currentpage= parseInt(page);
+      pageInfo.nextPage= pageInfo.currentpage < pageInfo.totalpage ? pageInfo.currentpage + 1 : null;
+      pageInfo.prevpage= pageInfo.currentpage > 1 ? pageInfo.currentpage - 1 : null;
+      return response(res, 'list all users', results, pageInfo);
+    });
   });
 };
 
@@ -71,7 +92,10 @@ exports.createPhone= (req, res)=>{
 
 exports.updatePassword=(req, res)=>{
   const {id}=req.authUser;
-  const {oldPassword, password}=req.body;
+  const {oldPassword, password, repeatPassword}=req.body;
+  if(password !== repeatPassword){
+    return response(res, 'Password doesnt match', null, null, 400);
+  }
   userModel.getDetailUsers(id, (err, results)=>{
     if(results.rows.length <1){
       return response(res,'User not found', null, null, 400);
@@ -96,11 +120,11 @@ exports.updatePassword=(req, res)=>{
             });
           });
         }else{
-          return response(res, 'Old password and new password doesnt match', null, null, 400);
+          return response(res, 'Old password doesnt match', null, null, 400);
         }
       })
       .catch(e =>{
-        return response(res, 'Old password and new password doesnt match', null, null, 404);
+        return response(res, 'Old password doesnt match', null, null, 404);
       });
   });
 };
@@ -127,6 +151,26 @@ exports.updatePin=(req, res)=>{
       });
     }else{
       return response(res, 'Pin doesnt match');
+    }
+  });
+};
+
+exports.updateProfiles = (req, res)=>{
+  const {id}=req.authUser;
+  console.log(req.body);
+  console.log(req.file);
+  let filename = null;
+  if (req.file){
+    filename = req.file.filename;
+  }
+  profilesModel.updateProfiles(id, filename, req.body, (err, results)=>{
+    console.log(req.file);
+    //console.log(err);
+    if(err){
+      return response(res, `Failed to update ${err.message}`, null,null,400);
+    }
+    else{
+      return response(res, 'Update profile succesfully', results.rows[0]);
     }
   });
 };

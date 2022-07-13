@@ -72,7 +72,7 @@ exports.updateProfiles=(id, picture, data, cb)=>{
 };
 
 exports.deleteProfiles=(id, data, cb)=>{
-  const q = 'DELETE FROM profiles WHERE ID=$1 RETURNING *';
+  const q = 'DELETE FROM profiles WHERE iduser=$1 RETURNING *';
   const val = [id];
   db.query(q, val, (err, res)=>{
     cb(res.rows);
@@ -80,7 +80,7 @@ exports.deleteProfiles=(id, data, cb)=>{
 };
 
 exports.getDetailProfiles = (id, cb)=>{
-  const q = 'SELECT * FROM profiles WHERE id=$1';
+  const q = 'SELECT * FROM profiles WHERE iduser=$1';
   const val = [id];
   console.log(id);
   db.query(q, val, (err, res)=>{
