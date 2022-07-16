@@ -56,14 +56,42 @@ exports.historyTransactions = (req, res)=>{
 
 exports.transfer=(req, res)=>{
   const sender_id=req.authUser.id;
-  qtModels.transfer(sender_id, req.body, (err, results)=>{
-    if(err){
-      return errorResponse(err,res);
+  userModel.getDetailUsers(sender_id,(err, resultsPin)=>{
+    const pinUser=resultsPin.rows[0];
+    // console.log(pinUser);
+    // console.log(req.body.pin);
+    if(resultsPin.length <1){
+      return res.redirect('/404');
     }
     else{
-      return response(res, 'Transaction success', results.rows[0]);
+      if(req.body.pin==pinUser.pin){
+        profilesModel.getLogedProfiles(sender_id,(err,resultsMoney)=>{
+          const myMoney = resultsMoney.rows[0];
+          console.log(myMoney);
+          console.log(req.body.amount);
+          if(resultsMoney.length <1){
+            return res.redirect('/404');
+          }
+          else{
+            if(parseInt(myMoney.balance)>=req.body.amount){
+              qtModels.transfer(sender_id, req.body, (err, results)=>{
+                if(err){
+                  return errorResponse(err,res);
+                }
+                else{
+                  return response(res, 'Transaction success', results.rows[0]);
+                }
+              });
+            }else{
+              return response(res, 'Not enough money', null, null, 404);
+            }
+          }
+        });
+      }else{return response(res, 'Pin doesnt match', null, null, 404);
+      }
     }
   });
+
 };
 
 exports.createPhone= (req, res)=>{

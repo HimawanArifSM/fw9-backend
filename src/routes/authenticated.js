@@ -3,19 +3,38 @@ const authMiddleware=require('../middleware/auth');
 const authController=require('../controllers/authenticated');
 //const profileController=require('../controllers/profiles');
 const uploadFile = require('../middleware/uploadFile');
+const {body} = require('express-validator');
+const rules = require('../middleware/profileValidator');
+
+const phoneValidator = [
+  body('phonenumber').isMobilePhone('id-ID').withMessage('Phone number format is incorect')
+];
+const passwordValidator = [
+  body('password').isLength({min: 8}).withMessage('Password length minimal 8 character')
+];
+const pinValidator = [
+  body('pin').isNumeric().withMessage('pin must be number')
+];
+const amountValidator = [
+  body('amount').isLength({min: 1}).withMessage('amount length minimal 1 character'),
+  body('amount').isNumeric().withMessage('amount only number'),
+];
+
+
+
 
 //GET
 authenticated.get('/profiles', authMiddleware, authController.getProfile);
 authenticated.get('/hostoryTransactions', authMiddleware, authController.historyTransactions);
 
 //POST
-authenticated.post('/transfer', authMiddleware, authController.transfer);
-authenticated.post('/phone', authMiddleware, authController.createPhone);
+authenticated.post('/transfer', authMiddleware, ...amountValidator,authController.transfer);
+authenticated.post('/phone', authMiddleware,...phoneValidator, authController.createPhone);
 
 //PATCH
-authenticated.patch('/profiles', authMiddleware, uploadFile, authController.updateProfiles);
-authenticated.patch('/changePassword', authMiddleware, authController.updatePassword);
-authenticated.patch('/changePin', authMiddleware, authController.updatePin);
-authenticated.patch('/phone', authMiddleware, uploadFile, authController.updateProfiles);
+authenticated.patch('/profiles', authMiddleware, uploadFile, ...rules, authController.updateProfiles);
+authenticated.patch('/changePassword', authMiddleware, ...passwordValidator,authController.updatePassword);
+authenticated.patch('/changePin', authMiddleware, ...pinValidator,authController.updatePin);
+authenticated.patch('/phone', authMiddleware, uploadFile, ...phoneValidator,authController.updateProfiles);
 
 module.exports=authenticated;
