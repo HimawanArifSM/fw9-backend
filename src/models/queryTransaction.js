@@ -79,3 +79,42 @@ exports.register =(data, cb)=>{
     }
   });
 };
+
+
+exports.topup=(recipient_id, data, cb)=>{
+  db.query('BEGIN', err=>{
+    if(err){
+      console.log('error 1');
+    }
+    else{
+      const time1 = new Date();
+      const q= 'INSERT INTO transactions(notes, recipient_id, amount, time, type_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+      const val = [data.notes, recipient_id, parseInt(data.amount), time1, data.type_id];
+      db.query(q, val, (err)=>{
+        if(err){
+          console.log('error 2');
+        }
+        else{
+          const q3= 'UPDATE profiles SET balance=balance+$1 WHERE iduser=$2';
+          const val3= [parseInt(data.amount), parseInt(recipient_id)];
+          console.log(recipient_id);
+          db.query(q3, val3, (err, res)=>{
+            console.log(res.rows);
+            if(err){
+              console.log('error 4');
+            }
+            else{
+              cb(err, res);
+              db.query('COMMIT', err=>{
+                if(err){
+                  console.error('Error transfer', err.stack);
+                }
+              });
+            }
+          });
+
+        }
+      });
+    }
+  });
+};

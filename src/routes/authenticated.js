@@ -29,6 +29,7 @@ authenticated.get('/hostoryTransactions', authMiddleware, authController.history
 
 //POST
 authenticated.post('/transfer', authMiddleware, ...amountValidator,authController.transfer);
+authenticated.post('/topup', authMiddleware, ...amountValidator,authController.topup);
 authenticated.post('/phone', authMiddleware,...phoneValidator, authController.createPhone);
 
 //PATCH

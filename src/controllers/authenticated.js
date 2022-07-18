@@ -54,6 +54,18 @@ exports.historyTransactions = (req, res)=>{
   });
 };
 
+exports.topup=(req, res)=>{
+  const recipient_id=req.authUser.id;
+  qtModels.topup(recipient_id, req.body, (err, results)=>{
+    if(err){
+      return errorResponse(err,res);
+    }
+    else{
+      return response(res, 'Transaction success', results.rows[0]);
+    }
+  });
+};
+
 exports.transfer=(req, res)=>{
   const sender_id=req.authUser.id;
   userModel.getDetailUsers(sender_id,(err, resultsPin)=>{
