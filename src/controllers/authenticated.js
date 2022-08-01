@@ -33,12 +33,12 @@ exports.getProfile = (req, res)=>{
 //   });
 // };
 exports.historyTransactions = (req, res)=>{
-  const {search_by='note', search='', sortBy='time', sorting='ASC', limit=parseInt(LIMIT_DATA), page=1}= req.query;
+  const {search_by='recipient', search='', sortBy='time', sorting='ASC', limit=parseInt(LIMIT_DATA), page=1}= req.query;
   const {id}=req.authUser;
   const offset = (page - 1) * limit;
 
-  transactionsModel.getHistoryTransactions(id, search_by ,search, sortBy, sorting, limit, offset, (err, results)=>{
-    //console.log(err);
+  transactionsModel.getHistoryFix(id, search_by ,search, sortBy, sorting, limit, offset, (err, results)=>{
+    // console.log(results);
     if(results.length<1){
       return res.redirect('/404');
     }
@@ -49,7 +49,7 @@ exports.historyTransactions = (req, res)=>{
       pageInfo.currentpage= parseInt(page);
       pageInfo.nextPage= pageInfo.currentpage < pageInfo.totalpage ? pageInfo.currentpage + 1 : null;
       pageInfo.prevpage= pageInfo.currentpage > 1 ? pageInfo.currentpage - 1 : null;
-      return response(res, 'list all users', results, pageInfo);
+      return response(res, 'list all users', results.rows, pageInfo);
     });
   });
 };
@@ -214,3 +214,4 @@ exports.updateProfiles = (req, res)=>{
     }
   });
 };
+

@@ -90,11 +90,12 @@ exports.getDetailProfiles = (id, cb)=>{
 };
 
 exports.getLogedProfiles = (id, cb)=>{
-  const q = 'SELECT * FROM profiles WHERE iduser=$1';
+  const q = 'SELECT * FROM profiles join users on profiles.iduser=users.id WHERE iduser=$1';
   const val = [id];
   //console.log(id);
   db.query(q, val, (err, res)=>{
-    //console.log(res);
+    // console.log(res);
     cb(err, res);
   });
 };
+

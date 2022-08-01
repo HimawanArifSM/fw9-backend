@@ -1,15 +1,16 @@
 //const { response } = require('express');
 require('dotenv').config();
-
+const cors = require('cors');
 //const authMiddleware=require('./src/middleware/auth');
 const express = require('express');
 
 global.__basepath = __dirname;
 
 const app = express();
+app.use(cors());
 
 app.use(express.urlencoded({extended: false}));
-app.use(express.static('assets'));
+app.use('/publik', express.static('assets'));
 
 app.get('/', (req, res)=>{
   return res.json({

@@ -71,14 +71,27 @@ exports.getDetailTransactions = (id, cb)=>{
 };
 exports.getHistoryTransactions = (id, search_by ,keyword, sortBy, sorting, limit, offset=0, cb)=>{
   //const q = 'SELECT * FROM transactions WHERE sender_id=$1 or recipient_id=$1';
-  db.query(`SELECT * FROM transactions WHERE sender_id=${id} ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
+  db.query(`SELECT * FROM transactions WHERE sender_id=${id} or recipient_id=${id} ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
   //const val = [id];
     console.log(res);
     cb(err, res.rows);
   });
 };
 exports.countAllHistoryTransactions = (id, search_by, keyword, cb)=>{
-  db.query(`SELECT * FROM transactions WHERE sender_id = ${id}`, (err, res)=>{
+  db.query(`SELECT * FROM transactions WHERE sender_id = ${id} or recipient_id=${id}`, (err, res)=>{
     cb(err, res.rowCount);
   });
 };
+
+exports.getHistoryFix=(id, search_by ,keyword, sortBy, sorting, limit, offset=0, cb)=>{
+  db.query(`SELECT transactions.id, t1.username sender, t2.username recipient, amount, t3.name type, time, t4.picture picture FROM transactions FULL OUTER JOIN users t1 on t1.id=transactions.sender_id FULL OUTER JOIN users t2 on t2.id=transactions.recipient_id JOIN profiles t4 on t4.iduser=t2.id FULL OUTER JOIN transactiontype t3 on t3.id=transactions.type_id WHERE transactions.sender_id = ${id} OR transactions.recipient_id = ${id}  ORDER BY ${sortBy} ${sorting} limit ${limit} offset ${offset}`, (err, res)=>{
+    console.log(err);
+    cb(err, res);
+  });
+};
+
+// exports.countHistoryFix=(id, search_by ,keyword, cb)=>{
+//   db.query(`SELECT transactions.id, t1.username sender, t2.username recipient, amount, t3.name type, time FROM transactions FULL OUTER JOIN users t1 on t1.id=transactions.sender_id FULL OUTER JOIN users t2 on t2.id=transactions.recipient_id FULL OUTER JOIN transactiontype t3 on t3.id=transactions.type_id WHERE transactions.sender_id = ${id} OR transactions.recipient_id = ${id} `, (err, res)=>{
+//     cb(err, res.rowCount);
+//   });
+// };

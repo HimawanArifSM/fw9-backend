@@ -25,7 +25,7 @@ const amountValidator = [
 
 //GET
 authenticated.get('/profiles', authMiddleware, authController.getProfile);
-authenticated.get('/hostoryTransactions', authMiddleware, authController.historyTransactions);
+authenticated.get('/historyTransactions', authMiddleware, authController.historyTransactions);
 
 //POST
 authenticated.post('/transfer', authMiddleware, ...amountValidator,authController.transfer);
