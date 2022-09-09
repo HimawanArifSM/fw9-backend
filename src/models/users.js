@@ -75,7 +75,7 @@ exports.deleteUsers=(id, data, cb)=>{
 //GET USER BY ID
 exports.getDetailUsers = (id, cb)=>{
   const q = 'SELECT * FROM users WHERE id=$1';
-  const val = [id];
+  const val = [parseInt(id)];
   db.query(q, val, (err, res)=>{
     //console.log(res);
     cb(err, res);

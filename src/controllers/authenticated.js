@@ -68,15 +68,16 @@ exports.topup=(req, res)=>{
 
 exports.transfer=(req, res)=>{
   const sender_id=req.authUser.id;
-  userModel.getDetailUsers(sender_id,(err, resultsPin)=>{
-    const pinUser=resultsPin.rows[0];
-    // console.log(pinUser);
-    // console.log(req.body.pin);
-    if(resultsPin.length <1){
+  userModel.getDetailUsers(sender_id,(err, results)=>{
+    // console.log('res'+ results.rows[0].pin);
+    const pinUser=results.rows[0].pin;
+    // console.log('tes'+pinUser);
+    // console.log('tes'+req.body.pin);
+    if(pinUser.length <1){
       return res.redirect('/404');
     }
     else{
-      if(req.body.pin==pinUser.pin){
+      if(req.body.pin==pinUser){
         profilesModel.getLogedProfiles(sender_id,(err,resultsMoney)=>{
           const myMoney = resultsMoney.rows[0];
           console.log(myMoney);

@@ -70,8 +70,10 @@ exports.deleteUsers = (req, res)=>{
 
 //GET DETAIL
 exports.getDetailUsers = (req, res)=>{
-  const {id}=req.params;
-  userModel.getDetailUsers(id, (results)=>{
+  const id=req.params.id;
+  console.log(id);
+  userModel.getDetailUsers(id, (err, results)=>{
+    console.log(results);
     if(results.rows.length > 0){
       return response(res, 'Detail user', results.rows[0]);
     }
