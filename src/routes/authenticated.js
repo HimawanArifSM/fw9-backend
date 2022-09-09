@@ -16,8 +16,8 @@ const pinValidator = [
   body('pin').isNumeric().withMessage('pin must be number')
 ];
 const amountValidator = [
-  body('amount').isLength({min: 1}).withMessage('amount length minimal 1 character'),
-  body('amount').isNumeric().withMessage('amount only number'),
+  body('amount').isLength({min: 5}).withMessage('amount length minimal 5 character'),
+  body('amount').isNumeric({min: 20000}).withMessage('amount only number'),
 ];
 
 

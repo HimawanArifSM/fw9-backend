@@ -52,7 +52,7 @@ exports.register =(data, cb)=>{
     if(err){
       console.log('error 1');
     }else{
-      const q = 'INSERT INTO users(username, email, password) VALUES ($1, $2, $3) RETURNING *';
+      const q = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *';
       const val = [data.username, data.email, data.password];
       db.query(q, val, (err, res)=>{
         if(err){
@@ -88,15 +88,19 @@ exports.topup=(recipient_id, data, cb)=>{
     }
     else{
       const time1 = new Date();
+      const notes = 'TopUp';
+      const type_id = 17; 
+      const duit = parseInt(data.amount);
+      console.log(typeof duit);
       const q= 'INSERT INTO transactions(notes, recipient_id, amount, time, type_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-      const val = [data.notes, recipient_id, parseInt(data.amount), time1, data.type_id];
+      const val = [notes, recipient_id, duit, time1, type_id];
       db.query(q, val, (err)=>{
         if(err){
           console.log('error 2');
         }
         else{
           const q3= 'UPDATE profiles SET balance=balance+$1 WHERE iduser=$2';
-          const val3= [parseInt(data.amount), parseInt(recipient_id)];
+          const val3= [duit, parseInt(recipient_id)];
           console.log(recipient_id);
           db.query(q3, val3, (err, res)=>{
             console.log(res.rows);
@@ -116,5 +120,17 @@ exports.topup=(recipient_id, data, cb)=>{
         }
       });
     }
+  });
+};
+
+
+
+exports.getLogedProfiles = (id, cb)=>{
+  const q = 'SELECT * FROM profiles join users on profiles.iduser=users.id WHERE iduser=$1';
+  const val = [id];
+  //console.log(id);
+  db.query(q, val, (err, res)=>{
+    // console.log(res);
+    cb(err, res);
   });
 };
