@@ -31,11 +31,12 @@ authenticated.get('/historyTransactions', authMiddleware, authController.history
 authenticated.post('/transfer', authMiddleware, ...amountValidator,authController.transfer);
 authenticated.post('/topup', authMiddleware, ...amountValidator,authController.topup);
 authenticated.post('/phone', authMiddleware,...phoneValidator, authController.createPhone);
+authenticated.patch('/phone', authMiddleware,...phoneValidator, authController.updatePhonenumber);
 
 //PATCH
 authenticated.patch('/profiles', authMiddleware, uploadFile, ...rules, authController.updateProfiles);
 authenticated.patch('/changePassword', authMiddleware, ...passwordValidator,authController.updatePassword);
 authenticated.patch('/changePin', authMiddleware, ...pinValidator,authController.updatePin);
-authenticated.patch('/phone', authMiddleware, uploadFile, ...phoneValidator,authController.updateProfiles);
+// authenticated.patch('/phone', authMiddleware, uploadFile, ...phoneValidator,authController.updateProfiles);
 
 module.exports=authenticated;

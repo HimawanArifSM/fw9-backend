@@ -66,6 +66,18 @@ exports.topup=(req, res)=>{
   });
 };
 
+exports.updatePhonenumber=(req, res)=>{
+  const id=req.authUser.id;
+  profilesModel.updateProfiles(id, null, req.body, (err, results)=>{
+    if(err){
+      return errorResponse(err);
+    }
+    else{
+      return response(res, 'Update phonenumber succesfully', results.rows[0]);
+    }
+  });
+};
+
 exports.transfer=(req, res)=>{
   const sender_id=req.authUser.id;
   userModel.getDetailUsers(sender_id,(err, results)=>{
@@ -197,7 +209,7 @@ exports.updatePin=(req, res)=>{
 };
 
 exports.updateProfiles = (req, res)=>{
-  const {id}=req.authUser;
+  const id=req.authUser;
   console.log(req.body);
   console.log(req.file);
   let filename = null;

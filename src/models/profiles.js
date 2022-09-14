@@ -59,6 +59,7 @@ exports.updateProfiles=(id, picture, data, cb)=>{
   }
   const key = Object.keys(filtered);
   const finalResult = key.map((o, ind)=>`${o}=$${ind+2}`);
+  console.log(val);
   const q = `UPDATE profiles SET ${finalResult} WHERE iduser=$1 RETURNING *`;
   db.query(q, val, (err, res)=>{
     console.log(res);
