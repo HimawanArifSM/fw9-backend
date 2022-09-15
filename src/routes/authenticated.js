@@ -37,6 +37,10 @@ authenticated.patch('/phone', authMiddleware,...phoneValidator, authController.u
 authenticated.patch('/profiles', authMiddleware, uploadFile, ...rules, authController.updateProfiles);
 authenticated.patch('/changePassword', authMiddleware, ...passwordValidator,authController.updatePassword);
 authenticated.patch('/changePin', authMiddleware, ...pinValidator,authController.updatePin);
+authenticated.patch('/updatePin', authMiddleware, ...pinValidator,authController.updatePIN);
+
+//pin
+authenticated.post('/checkPin', authMiddleware, ...pinValidator,authController.checkPin);
 // authenticated.patch('/phone', authMiddleware, uploadFile, ...phoneValidator,authController.updateProfiles);
 
 module.exports=authenticated;

@@ -78,6 +78,18 @@ exports.updatePhonenumber=(req, res)=>{
   });
 };
 
+exports.updatePIN=(req, res)=>{
+  const id=req.authUser.id;
+  userModel.updateUsers(id, req.body, (err, results)=>{
+    if(err){
+      return errorResponse(err);
+    }
+    else{
+      return response(res, 'Update pin succesfully', results.rows[0]);
+    }
+  });
+};
+
 exports.transfer=(req, res)=>{
   const sender_id=req.authUser.id;
   userModel.getDetailUsers(sender_id,(err, results)=>{
@@ -228,3 +240,20 @@ exports.updateProfiles = (req, res)=>{
   });
 };
 
+//cek pin
+exports.checkPin = (req, res)=>{
+  const {id}=req.authUser;
+  console.log(req);
+  userModel.getDetailUsers(id, (err, results)=>{
+    // console.log(err);
+    // console.log('pin return ' + results.rows[0].pin);
+    if(results.rows.length > 0){
+      if(parseInt(results.rows[0].pin) === parseInt(req.body.pin)){
+        return response(res, 'match');
+      }
+      else{return response(res, 'Pin doesnt match');}
+    }
+    else{return res.redirect('/404');
+    }
+  });
+};
