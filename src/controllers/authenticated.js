@@ -221,7 +221,7 @@ exports.updatePin=(req, res)=>{
 };
 
 exports.updateProfiles = (req, res)=>{
-  const id=req.authUser;
+  const {id}=req.authUser;
   console.log(req.body);
   console.log(req.file);
   let filename = null;
@@ -229,7 +229,7 @@ exports.updateProfiles = (req, res)=>{
     filename = req.file.filename;
   }
   profilesModel.updateProfiles(id, filename, req.body, (err, results)=>{
-    console.log(req.file);
+    // console.log(req.file);
     //console.log(err);
     if(err){
       return response(res, `Failed to update ${err.message}`, null,null,400);
