@@ -14,11 +14,14 @@
 ##### Run the app with `npm run dev`
 #
 ## .env
-##### PORT= 3333
-##### DATABASE_URL= postgresql://postgres:(yourPostgresqlPassword)@localhost:5432/zwallet
-##### LIMIT_DATA = 10
-##### LIMIT_PICTURE = 1
-##### APP_SECRET = 13lQ1NuN!Qu3B9tZ
+##### PORT= (your port)
+##### DATABASE_URL= (your database url)
+##### LIMIT_DATA = (set your limit data ex:5)
+##### LIMIT_PICTURE = (set your picture limit in megabyte)
+##### APP_SECRET = (set your app secret)
+##### CLOUD_NAME = (set your cloud name from cloudinary)
+##### API_KEY = (set your api key)
+##### API_SECRET = (set your api secret)
 #
 # Main Endpoint
 Notes | URL | Method | Description |
