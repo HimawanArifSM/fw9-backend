@@ -1,19 +1,18 @@
-const path = require('path');
+// const path = require('path');
 const multer = require('multer');
 const{LIMIT_PICTURE}= process.env;
+const {CloudinaryStorage} = require('multer-storage-cloudinary');
+const cloudinary = require('./cloudinary');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) =>{
-    cb(null, path.join(global.__basepath, 'assets', 'uploads'));
+const storage = new CloudinaryStorage({
+  cloudinary : cloudinary,
+  params: {folder: 'JMoney',
+    format: async(req, file) => {
+      const formatExt = file.mimetype.split('/')[1];
+      return formatExt; 
+    },
+    public_id: (req, file) => new Date().getTime()
   },
-  filename: (req, file, cb)=>{
-    const timestamp = new Date().getTime();
-    const ext = file.mimetype.split('/')[1];
-    if(!file){
-      cb(null, null);
-    }
-    cb(null, `${timestamp}.${ext}`);
-  }
 });
 
 const upload = multer({

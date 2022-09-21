@@ -226,7 +226,7 @@ exports.updateProfiles = (req, res)=>{
   console.log(req.file);
   let filename = null;
   if (req.file){
-    filename = req.file.filename;
+    filename = req.file.path;
   }
   profilesModel.updateProfiles(id, filename, req.body, (err, results)=>{
     // console.log(req.file);
