@@ -5,6 +5,7 @@ const authController=require('../controllers/authenticated');
 const uploadFile = require('../middleware/uploadFile');
 const {body} = require('express-validator');
 const rules = require('../middleware/profileValidator');
+const validation = require('../middleware/validation');
 
 const phoneValidator = [
   body('phonenumber').isMobilePhone('id-ID').withMessage('Phone number format is incorect')
@@ -16,8 +17,8 @@ const pinValidator = [
   body('pin').isNumeric().withMessage('pin must be number')
 ];
 const amountValidator = [
-  body('amount').isLength({min: 5}).withMessage('amount length minimal 5 character'),
-  body('amount').isNumeric({min: 20000}).withMessage('amount only number'),
+  body('amount').isLength({min: 5}).withMessage('amount length minimal 10.000'),
+  body('amount').isNumeric().withMessage('amount only number'),
 ];
 
 
@@ -28,8 +29,8 @@ authenticated.get('/profiles', authMiddleware, authController.getProfile);
 authenticated.get('/historyTransactions', authMiddleware, authController.historyTransactions);
 
 //POST
-authenticated.post('/transfer', authMiddleware, ...amountValidator,authController.transfer);
-authenticated.post('/topup', authMiddleware, ...amountValidator,authController.topup);
+authenticated.post('/transfer', authMiddleware, ...amountValidator,validation,authController.transfer);
+authenticated.post('/topup', authMiddleware, ...amountValidator,validation,authController.topup);
 authenticated.post('/phone', authMiddleware,...phoneValidator, authController.createPhone);
 authenticated.patch('/phone', authMiddleware,...phoneValidator, authController.updatePhonenumber);
 
