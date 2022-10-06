@@ -21,7 +21,8 @@ const upload = multer({
     fileSize: parseInt(LIMIT_PICTURE) * 1024 * 1024
   },
   fileFilter: (req, file, cb)=>{
-    const allowExt = ['image/png', 'image/jpg', 'image/webp'];
+    console.log(file);
+    const allowExt = ['image/png', 'image/jpg', 'image/webp', 'image/jpeg'];
     if(allowExt.includes(file.mimetype)){
       cb(null, true);
     }else{
