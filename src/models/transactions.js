@@ -84,7 +84,7 @@ exports.countAllHistoryTransactions = (id, search_by, keyword, cb)=>{
 };
 
 exports.getHistoryFix=(id, search_by ,keyword, sortBy, sorting, limit, offset=0, cb)=>{
-  db.query(`SELECT transactions.id, t4.fullname sender, t4.fullname recipient, transactions.recipient_id, amount, t3.name type, time, t4.picture picture FROM transactions FULL OUTER JOIN users t1 on t1.id=transactions.sender_id FULL OUTER JOIN users t2 on t2.id=transactions.recipient_id JOIN profiles t4 on t4.iduser=t2.id FULL OUTER JOIN transactiontype t3 on t3.id=transactions.type_id WHERE transactions.sender_id = ${id} OR transactions.recipient_id = ${id} AND ${search_by} ILIKE ${keyword} ORDER BY ${sortBy} ${sorting} limit ${limit} offset ${offset}`, (err, res)=>{
+  db.query(`SELECT transactions.id, t4.fullname sender, t4.fullname recipient, transactions.recipient_id, amount, t3.name type, time, t4.picture picture FROM transactions FULL OUTER JOIN users t1 on t1.id=transactions.sender_id FULL OUTER JOIN users t2 on t2.id=transactions.recipient_id JOIN profiles t4 on t4.iduser=t2.id FULL OUTER JOIN transactiontype t3 on t3.id=transactions.type_id WHERE transactions.sender_id = ${id} OR transactions.recipient_id = ${id} AND ${search_by} LIKE ${keyword} ORDER BY ${sortBy} ${sorting} limit ${limit} offset ${offset}`, (err, res)=>{
     console.log(err);
     cb(err, res);
   });
