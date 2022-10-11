@@ -89,6 +89,8 @@ exports.getHistoryFix=(id, search_by ,keyword, sortBy, sorting, limit, offset=0,
     cb(err, res);
   });
 };
+//AND ${search_by} ILIKE '%${keyword}%'
+// AND ${search_by} LIKE ${keyword}
 
 // exports.countHistoryFix=(id, search_by ,keyword, cb)=>{
 //   db.query(`SELECT transactions.id, t1.username sender, t2.username recipient, amount, t3.name type, time FROM transactions FULL OUTER JOIN users t1 on t1.id=transactions.sender_id FULL OUTER JOIN users t2 on t2.id=transactions.recipient_id FULL OUTER JOIN transactiontype t3 on t3.id=transactions.type_id WHERE transactions.sender_id = ${id} OR transactions.recipient_id = ${id} `, (err, res)=>{
