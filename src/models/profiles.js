@@ -3,7 +3,7 @@ const {LIMIT_DATA}=process.env;
 
 
 exports.getAllProfiles = (search_by, keyword, sortBy, sorting, limit=parseInt(LIMIT_DATA), offset=0,cb)=>{
-  db.query(`SELECT * FROM profiles WHERE ${search_by} LIKE '%${keyword}%' ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
+  db.query(`SELECT * FROM profiles WHERE ${search_by} ILIKE '%${keyword}%' ORDER BY ${sortBy} ${sorting} limit $1 offset $2`, [limit, offset], (err, res)=>{
     console.log(res);
     cb(err, res.rows);
   });
